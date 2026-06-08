@@ -20,7 +20,9 @@ echo "→ Copying notepad portfolio into public/…"
 cp "$ROOT/about.html" "$OUT/about.html"
 cp -R "$ROOT/css" "$OUT/css"
 cp -R "$ROOT/js" "$OUT/js"
-cp -R "$ROOT/assets" "$OUT/assets"
+# Webpack already creates public/assets/ for 3D textures; merge portfolio images in place.
+mkdir -p "$OUT/assets"
+cp -R "$ROOT/assets/." "$OUT/assets/"
 
 if [ -f "$ROOT/cover.html" ]; then
   cp "$ROOT/cover.html" "$OUT/cover.html"
