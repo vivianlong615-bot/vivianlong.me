@@ -7,10 +7,12 @@ OUT="$ROOT/portfolio-3d/public"
 
 echo "→ Building 3D scene (webpack)…"
 cd "$ROOT/portfolio-3d"
-if [ -n "${CI:-}" ] || [ ! -d node_modules ]; then
-  npm ci
-else
-  npm install
+if [ ! -d node_modules ]; then
+  if [ -f package-lock.json ]; then
+    npm ci
+  else
+    npm install
+  fi
 fi
 npm run build
 

@@ -28,6 +28,10 @@ jobs:
           cache: npm
           cache-dependency-path: portfolio-3d/package-lock.json
 
+      - name: Install dependencies
+        working-directory: portfolio-3d
+        run: npm ci
+
       - name: Build site
         run: bash scripts/build-pages.sh
 
