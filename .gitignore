@@ -1,0 +1,6 @@
+.tools/
+portfolio-3d/node_modules/
+portfolio-3d/public/
+_reference/
+.DS_Store
+*.log

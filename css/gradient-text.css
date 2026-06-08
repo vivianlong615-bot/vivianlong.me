@@ -1,0 +1,41 @@
+/* Vanilla port of React Bits GradientText */
+@keyframes gradient-text-shift {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+.gradient-text {
+    margin: 0;
+}
+
+.gradient-text-inner {
+    display: block;
+    background-repeat: repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradient-text-shift ease-in-out infinite alternate;
+}
+
+.gradient-text.with-border {
+    position: relative;
+    display: flex;
+    max-width: fit-content;
+    padding: 0.35rem 0.75rem;
+    border-radius: 1.25rem;
+    overflow: hidden;
+}
+
+.gradient-text.with-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: inherit;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}

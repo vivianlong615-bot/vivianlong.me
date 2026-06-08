@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yiwen (Vivian) Long — Portfolio</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; min-height: 100vh; display: grid; place-items: center;
+            background: #000; color: #fff; font-family: "DM Sans", system-ui, sans-serif;
+            padding: 24px;
+        }
+        .card { max-width: 520px; text-align: center; line-height: 1.6; }
+        h1 { font-size: 1.25rem; font-weight: 500; margin: 0 0 12px; }
+        p { color: rgba(255,255,255,.72); margin: 0 0 16px; font-size: 15px; }
+        code { background: rgba(255,255,255,.08); padding: 2px 6px; border-radius: 4px; }
+        a { color: #7dd3fc; }
+        .links { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+        .links a { text-decoration: none; padding: 10px 18px; border: 1px solid rgba(255,255,255,.25); border-radius: 8px; }
+        .links a.primary { background: #fff; color: #000; border-color: #fff; }
+    </style>
+    <script>
+        // 探测真正的 3D 开发服务（页面里须含 #webgl）
+        (function () {
+            var ports = [8082, 8083, 8084, 8085, 8081, 8080];
+            var i = 0;
+            function tryNext() {
+                if (i >= ports.length) return;
+                var port = ports[i++];
+                fetch('http://localhost:' + port + '/')
+                    .then(function (res) {
+                        if (!res.ok) throw new Error('not ok');
+                        return res.text();
+                    })
+                    .then(function (html) {
+                        if (html.indexOf('id="webgl"') !== -1) {
+                            window.location.href = 'http://localhost:' + port + '/';
+                        } else {
+                            tryNext();
+                        }
+                    })
+                    .catch(tryNext);
+            }
+            tryNext();
+        })();
+    </script>
+</head>
+<body>
+    <div class="card">
+        <h1>3D 作品集需要本地开发服务器</h1>
+        <p>直接双击 HTML 只会打开旧版 <code>cover.html</code>，看不到 3D 书桌效果。</p>
+        <p>请在终端运行：<br><code>cd portfolio-3d && npm run dev</code></p>
+        <p>然后打开终端里显示的地址（通常是 <a href="http://localhost:8082/">http://localhost:8082</a>）。</p>
+        <div class="links">
+            <a class="primary" href="http://localhost:8082/">打开 3D 入口</a>
+            <a href="cover.html">旧版封面 cover.html</a>
+            <a href="about.html">Win95 作品集 about.html</a>
+        </div>
+    </div>
+</body>
+</html>

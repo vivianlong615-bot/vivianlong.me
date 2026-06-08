@@ -1,0 +1,695 @@
+/* ==========================================================================
+   Wade & Leta Works 视觉系统 — Vivian Long Portfolio
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;700;900&display=swap');
+
+:root {
+    --bg-base: #0000FF;
+    --bg-dark: #000000;
+    --text-light: #FFFFFF;
+    --accent-yellow: #FFFF00;
+    --text-dim: rgba(255, 255, 255, 0.28);
+    --transition-brutal: all 0.15s steps(3, end);
+    --wal-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --wal-side-w: clamp(200px, 18vw, 280px);
+    --wal-preview-w: clamp(280px, 42vw, 560px);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border-radius: 0 !important;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: 'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    cursor: none;
+}
+
+a, button, .wade-tag, .wade-exp-card, #portrait-trigger, .wal-work-link {
+    cursor: none;
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ── Custom cursor ── */
+#wade-cursor {
+    width: 20px;
+    height: 20px;
+    background-color: var(--accent-yellow);
+    border: 2px solid var(--bg-dark);
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    mix-blend-mode: difference;
+    transition: width 0.12s, height 0.12s, background-color 0.12s, transform 0.12s;
+}
+
+body.hovering #wade-cursor {
+    width: 48px;
+    height: 48px;
+    background-color: #FF00FF;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.click-burst {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    font-size: 1.4rem;
+    font-weight: 900;
+    background: var(--bg-base);
+    color: var(--accent-yellow);
+    border: 3px solid var(--text-light);
+    padding: 0.2rem 0.8rem;
+    box-shadow: 4px 4px 0 var(--text-light);
+    animation: burstAnimation 0.6s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes burstAnimation {
+    0% { transform: translate(-50%, -50%) scale(0.3) rotate(0deg); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1.2) rotate(12deg); opacity: 0; }
+}
+
+/* ── App shell (W&L layout) ── */
+.wal-app {
+    display: grid;
+    grid-template-columns: var(--wal-side-w) 1fr;
+    min-height: 100vh;
+}
+
+.wal-side {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--wal-side-w);
+    height: 100vh;
+    border-right: 2px solid rgba(255, 255, 255, 0.15);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.75rem 1.25rem;
+    z-index: 100;
+    background: var(--bg-dark);
+}
+
+.wal-side-brand {
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    line-height: 1.4;
+}
+
+.wal-side-brand a:hover {
+    color: var(--accent-yellow);
+}
+
+.wal-side-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    margin-top: 3rem;
+}
+
+.wal-side-link {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.35rem 0;
+    transition: color 0.2s var(--wal-ease), transform 0.2s var(--wal-ease);
+    display: inline-block;
+}
+
+.wal-side-link:hover,
+.wal-side-link.active {
+    color: var(--accent-yellow);
+    transform: translateX(4px);
+}
+
+.wal-side-footer {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.8;
+}
+
+.wal-side-footer a:hover {
+    color: var(--text-light);
+}
+
+.wal-lang {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    font-size: 0.65rem;
+    font-weight: 800;
+}
+
+.wal-lang button {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.4);
+    font: inherit;
+    letter-spacing: 0.1em;
+}
+
+.wal-lang button.active {
+    color: var(--accent-yellow);
+    text-decoration: underline;
+}
+
+.wal-main {
+    grid-column: 2;
+    margin-left: var(--wal-side-w);
+    min-height: 100vh;
+}
+
+/* ── Works index (wadeandleta.com/works) ── */
+.wal-works-page {
+    display: grid;
+    grid-template-columns: 1fr var(--wal-preview-w);
+    min-height: 100vh;
+    position: relative;
+}
+
+.wal-works-list-wrap {
+    padding: clamp(2rem, 5vh, 4rem) clamp(1.5rem, 4vw, 3.5rem);
+    padding-right: 1rem;
+    z-index: 2;
+}
+
+.wal-page-label {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    margin-bottom: clamp(2rem, 6vh, 4rem);
+    text-transform: uppercase;
+}
+
+.wal-works-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.wal-work-item {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.wal-work-item:last-child {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.wal-work-link {
+    display: block;
+    padding: clamp(1rem, 2.5vh, 1.75rem) 0;
+    transition: opacity 0.45s var(--wal-ease);
+}
+
+.wal-works-list:hover .wal-work-item {
+    opacity: 0.22;
+}
+
+.wal-works-list:hover .wal-work-item:hover,
+.wal-works-list:hover .wal-work-item.is-active {
+    opacity: 1;
+}
+
+.wal-work-title {
+    display: block;
+    font-size: clamp(1.75rem, 4.2vw, 4.25rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    text-transform: uppercase;
+    transition: transform 0.5s var(--wal-ease), color 0.35s var(--wal-ease);
+}
+
+.wal-work-item:hover .wal-work-title,
+.wal-work-item.is-active .wal-work-title {
+    color: var(--text-light);
+    transform: translateX(8px);
+}
+
+.wal-work-location {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: clamp(0.65rem, 1vw, 0.8rem);
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+    transition: color 0.35s var(--wal-ease);
+}
+
+.wal-work-item:hover .wal-work-location,
+.wal-work-item.is-active .wal-work-location {
+    color: var(--accent-yellow);
+}
+
+.wal-work-cat {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    color: var(--bg-base);
+    background: var(--accent-yellow);
+    padding: 0.15rem 0.45rem;
+}
+
+/* ── Sticky preview panel ── */
+.wal-preview {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: var(--wal-preview-w);
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.wal-preview-inner {
+    position: absolute;
+    inset: 0;
+    padding: clamp(1rem, 3vh, 2rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wal-preview-frame {
+    position: relative;
+    width: 100%;
+    height: min(78vh, 720px);
+    border: 3px solid var(--text-light);
+    overflow: hidden;
+    box-shadow: 12px 12px 0 rgba(0, 0, 255, 0.6);
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.6s var(--wal-ease);
+}
+
+.wal-preview-media {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: scale(1.08);
+    transition: opacity 0.55s var(--wal-ease), transform 0.7s var(--wal-ease);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wal-preview-media.is-visible {
+    opacity: 1;
+    transform: scale(1);
+    z-index: 2;
+}
+
+.wal-preview-art {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2rem;
+}
+
+.wal-preview-art-label {
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-align: center;
+    line-height: 1;
+}
+
+.wal-preview-art-cat {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.25em;
+    opacity: 0.7;
+}
+
+.wal-preview-counter {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 1.25rem;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    z-index: 5;
+    mix-blend-mode: difference;
+}
+
+/* ── Work detail (sticky scroll) ── */
+.wal-detail {
+    padding: clamp(2rem, 5vh, 4rem) clamp(1.5rem, 4vw, 4rem);
+    max-width: 900px;
+}
+
+.wal-detail-back {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    display: inline-block;
+}
+
+.wal-detail-back:hover {
+    color: var(--accent-yellow);
+}
+
+.wal-detail-title {
+    font-size: clamp(1.5rem, 3.5vw, 2.75rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin-bottom: 0.75rem;
+}
+
+.wal-detail-meta {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-yellow);
+    margin-bottom: 2rem;
+}
+
+.wal-detail-time {
+    display: inline-block;
+    border: 2px solid var(--text-light);
+    padding: 0.2rem 0.6rem;
+    margin-left: 0.75rem;
+    color: var(--text-light);
+}
+
+.wal-detail-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: 2rem;
+}
+
+.wal-detail-bullets li {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.72);
+    padding-left: 1.25rem;
+    border-left: 3px solid var(--bg-base);
+}
+
+.wal-detail-sticky {
+    display: grid;
+    grid-template-columns: 1fr var(--wal-preview-w);
+    gap: 2rem;
+}
+
+.wal-detail-sticky .wal-preview {
+    position: sticky;
+    top: 0;
+    right: auto;
+    width: 100%;
+    height: 100vh;
+    pointer-events: auto;
+}
+
+/* ── Home / Practice ── */
+.wal-home {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: clamp(2rem, 5vh, 4rem);
+    gap: 2rem;
+}
+
+.wal-huge-title {
+    font-size: clamp(2rem, 4.5vw, 4rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+}
+
+.wal-hero-kicker {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent-yellow);
+    margin-bottom: 0.75rem;
+}
+
+.wal-hero-desc {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.65);
+    max-width: 36rem;
+}
+
+.wal-btn {
+    display: inline-block;
+    margin-top: 2rem;
+    background: var(--text-light);
+    color: var(--bg-dark);
+    padding: 0.9rem 2rem;
+    font-size: 0.8rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 3px solid var(--text-light);
+    transition: var(--transition-brutal);
+}
+
+.wal-btn:hover {
+    background: var(--bg-dark);
+    color: var(--accent-yellow);
+    border-color: var(--accent-yellow);
+    transform: translate(-4px, -4px);
+    box-shadow: 6px 6px 0 var(--text-light);
+}
+
+#portrait-trigger {
+    position: relative;
+    height: min(70vh, 520px);
+    width: 100%;
+}
+
+.wal-portrait-frame {
+    position: absolute;
+    width: 80%;
+    height: 85%;
+    border: 3px solid var(--text-light);
+    overflow: hidden;
+    box-shadow: 8px 8px 0 var(--bg-base);
+}
+
+.wal-portrait-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.wal-body-lead {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.wal-body-mono {
+    font-size: 0.8rem;
+    font-family: ui-monospace, monospace;
+    color: var(--accent-yellow);
+    border-left: 4px solid var(--bg-base);
+    padding: 0.5rem 0 0.5rem 1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.wal-body-text {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.wal-practice-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+}
+
+.wal-card {
+    border: 3px solid var(--text-light);
+    background: var(--bg-base);
+    padding: 1.75rem;
+    transition: var(--transition-brutal);
+}
+
+.wal-card:hover {
+    background: var(--bg-dark);
+    box-shadow: 8px 8px 0 var(--accent-yellow);
+    transform: translate(-4px, -4px);
+}
+
+.wal-card h3 {
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    background: var(--accent-yellow);
+    color: var(--bg-dark);
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.wal-card ul {
+    list-style: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.9;
+}
+
+.wal-tag-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+.wal-tag {
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    padding: 0.45rem 0.9rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    transition: var(--transition-brutal);
+}
+
+.wal-tag:hover {
+    background: var(--bg-base);
+    border-color: var(--accent-yellow);
+    color: var(--accent-yellow);
+}
+
+.wal-marquee-wrap {
+    border-top: 2px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+    overflow: hidden;
+    padding: 0.75rem 0;
+    margin-top: 4rem;
+}
+
+.wal-marquee {
+    display: flex;
+    width: max-content;
+    animation: walMarquee 22s linear infinite;
+}
+
+.wal-marquee span {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding-right: 3rem;
+    white-space: nowrap;
+}
+
+@keyframes walMarquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* ── Mobile ── */
+.wal-mobile-preview {
+    display: none;
+    margin-top: 1rem;
+    border: 3px solid var(--text-light);
+    aspect-ratio: 4/5;
+    overflow: hidden;
+}
+
+@media (max-width: 1024px) {
+    .wal-app {
+        grid-template-columns: 1fr;
+    }
+
+    .wal-side {
+        position: relative;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1rem;
+        border-right: none;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .wal-side-nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-top: 0;
+        gap: 0.75rem;
+    }
+
+    .wal-side-footer {
+        width: 100%;
+    }
+
+    .wal-main {
+        margin-left: 0;
+    }
+
+    .wal-works-page {
+        grid-template-columns: 1fr;
+    }
+
+    .wal-preview {
+        display: none;
+    }
+
+    .wal-mobile-preview {
+        display: block;
+    }
+
+    .wal-work-title {
+        font-size: clamp(1.5rem, 7vw, 2.5rem);
+    }
+
+    .wal-home {
+        grid-template-columns: 1fr;
+    }
+
+    .wal-detail-sticky {
+        grid-template-columns: 1fr;
+    }
+
+    body {
+        cursor: auto;
+    }
+
+    #wade-cursor {
+        display: none;
+    }
+
+    a, button, .wal-work-link {
+        cursor: pointer;
+    }
+}
